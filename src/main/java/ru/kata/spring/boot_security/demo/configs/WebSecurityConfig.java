@@ -27,42 +27,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") //доступ к этой странице возможен только с ролью ADMIN
-                .antMatchers("/", "/index/**").permitAll()
+                .antMatchers("/", "/index/**", "/error/**").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin() // если мы не направляем на кастомную страницу логина и пароля, то Spring генерит стандартную
+//                .loginPage("/login") //внес допом
                 .loginProcessingUrl("/authentication/login/check")
                 .successHandler(new SuccessUserHandler())
+//                .defaultSuccessUrl("/user") //внес допом
                 .and()
                 .logout().logoutSuccessUrl("/"); // если делаем логаут, то направляем в корень
 
     }
-
-//    @Bean
-//    public JdbcUserDetailsManager users(DataSource dataSource) {
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("{bcrypt}$2y$12$BGMFlWNQk8wFpMpei4ixGeaSyntPo1.2LUvxIzCc6rwxXKkiwwHdO")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("{bcrypt}$2y$12$BGMFlWNQk8wFpMpei4ixGeaSyntPo1.2LUvxIzCc6rwxXKkiwwHdO")
-//                .roles("USER", "ADMIN")
-//                .build();
-//
-//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-//        jdbcUserDetailsManager.createUser(user);
-//        jdbcUserDetailsManager.createUser(admin);
-//
-//        return jdbcUserDetailsManager;
-//    }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(personDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

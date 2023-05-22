@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo;
+package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -19,11 +19,13 @@ public class Initializer {
 
     @PostConstruct
     public void init() {
-        User admin = new User("admin@mail.ru", "admin");
+
+        Set<Role> adminRoles = new HashSet<>();
         Role userRole = new Role("ROLE_USER");
         Role adminRole = new Role("ROLE_ADMIN");
 
-        Set<Role> adminRoles = new HashSet<>();
+        User admin = new User("Admin", "Adminov", "admin@mail.ru", "admin", adminRoles);
+
         adminRoles.add(userRole);
         adminRoles.add(adminRole);
         admin.setRoles(adminRoles);

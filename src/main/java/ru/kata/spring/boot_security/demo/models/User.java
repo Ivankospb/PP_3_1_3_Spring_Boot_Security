@@ -28,7 +28,7 @@ public class User implements UserDetails{
     @Size(min = 2, max = 30, message = "SurName should be between 2 and 30 characters") // Фамилия от 2 до 30 символов
     private String surname;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotEmpty(message = "Email should not be empty")
     @Email
     private String email;
@@ -47,9 +47,12 @@ public class User implements UserDetails{
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String name, String surname, String email, String password, Set<Role> roles) {
+        this.name = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -150,4 +153,5 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 }
