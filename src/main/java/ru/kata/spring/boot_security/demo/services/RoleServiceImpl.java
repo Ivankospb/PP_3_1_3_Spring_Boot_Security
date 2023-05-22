@@ -12,12 +12,10 @@ public class RoleServiceImpl implements RoleService{
     private final RoleRepositories roleRepositories;
 
     public RoleServiceImpl(RoleRepositories roleRepositories) {
-
         this.roleRepositories = roleRepositories;
     }
     @Override
     public List<Role> findAll() {
-
         return roleRepositories.findAll();
     }
 
@@ -25,6 +23,4 @@ public class RoleServiceImpl implements RoleService{
     public List<Role> getRoles() {
         return roleRepositories.findAll();
     }
-
-
 }

@@ -22,22 +22,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    //Метод настраивает аутентификацию
+    //Метод настраивает авторизацию
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") //доступ к этой странице возможен только с ролью ADMIN
-                .antMatchers("/", "/index/**", "/error/**").permitAll()
-                .anyRequest().hasAnyRole("USER", "ADMIN")
+                .antMatchers("/user").hasRole("USER") //доступ к этой странице возможен только с ролью USER
+                .anyRequest().hasAnyRole("USER", "ADMIN") // ко всем остальным страницам доступ получают ADMIN и USER
                 .and()
-                .formLogin() // если мы не направляем на кастомную страницу логина и пароля, то Spring генерит стандартную
-//                .loginPage("/login") //внес допом
+                .formLogin().permitAll() // если мы не направляем на кастомную страницу логина и пароля, то Spring генерит стандартную
                 .loginProcessingUrl("/authentication/login/check")
                 .successHandler(new SuccessUserHandler())
-//                .defaultSuccessUrl("/user") //внес допом
                 .and()
-                .logout().logoutSuccessUrl("/"); // если делаем логаут, то направляем в корень
-
+                .logout().logoutSuccessUrl("/login"); // если делаем логаут, то направляем в /login
     }
 
     @Bean

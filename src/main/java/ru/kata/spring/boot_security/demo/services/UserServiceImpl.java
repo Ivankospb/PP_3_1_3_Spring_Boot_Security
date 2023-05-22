@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     private final UserRepositories userRepositories;
 
+    @Autowired
     public UserServiceImpl(UserRepositories userRepositories) {
         this.userRepositories = userRepositories;
 
@@ -31,10 +33,6 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void saveUser(User user) {
-        //метод для сохранения данных пользователя при редактировании
-//        if (getUserByEmail(user.getEmail()) != null) {
-//            throw new RuntimeException("Пользователь с таким логином уже существует");
-//        }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepositories.save(user);
     }
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public User getUserByEmail(String email) {
+    public User getUserByLogin(String email) {
         return userRepositories.getUserByEmail(email);
     }
 

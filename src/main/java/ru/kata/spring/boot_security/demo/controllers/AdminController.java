@@ -27,7 +27,7 @@ public class AdminController {
     @GetMapping("/page")
     // страница админа со списком всех пользователей
     public String adminPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userServiceImpl.getUserByEmail(userDetails.getUsername());
+        User user = userServiceImpl.getUserByLogin(userDetails.getUsername());
         model.addAttribute("principal", user);
         model.addAttribute("users", userServiceImpl.getAllUsers());
         model.addAttribute("roles", roleServiceImpl.findAll());
